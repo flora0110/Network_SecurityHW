@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% csrf_token %}
+    <form action="/SDES/encrypt" method="get">
+        <label for="plain_text">plain text</label>
+        <input id="plain_text" type="text" name="plain_text">
+        <input type="submit" value="encrypt">
+    </form>
+    <p>
+    {% if ciphertext %}
+        ciphertext: {{ ciphertext }}
+    {% endif %}
+    </p>
+    <form action="/SDES/decode" method="get">
+        <label for="cipher_text">cipher text</label>
+        <input id="cipher_text" type="text" name="cipher_text">
+        <input type="submit" value="decode">
+    </form>
+    <p>
+    {% if plaintext %}
+        plaintext: {{ plaintext }}
+    {% endif %}
+    </p>
+  </body>
+</html>
