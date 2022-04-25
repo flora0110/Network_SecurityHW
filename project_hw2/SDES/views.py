@@ -29,9 +29,9 @@ def decode(request):
         return render(request, 'home.html', context)
     else:
         return render(request, 'home.html')
-
-
 #generation of key
+
+
 def P10(key):  # 3 5 2 7 4 10 1 9 8 6
     return key[2] + key[4] + key[1] + key[6] + key[3] + key[9] + key[0] + key[8] + key[7] + key[5]
 
@@ -47,18 +47,6 @@ def P8(key):  # 6 3 7 4 8 5 10 9
 def LS2(key):
     return key[2] + key[3] + key[4] + key[0] + key[1] + key[7] + key[8] + key[9] + key[5] + key[6]
 
-
-'''
-def KeyGeneration(key):
-    key = P10(key)
-    key = LS1(key)
-    key1 = P8(key)
-    key = LS2(key)
-    key2 = P8(key)
-    print("key1 is : " + key1)
-    print("key2 is : " + key2)
-'''
-
 #encryption and decryption
 
 
@@ -72,15 +60,16 @@ def EP(str):  # 4 1 2 3 2 3 4 1
 
 def xor(str1, key):
     if(len(str1) == 4):
-        integer1 = str(int(str1[0]) ^ int(key[0])) + str(int(str1[1]) ^ int(
-            key[1])) + str(int(str1[2]) ^ int(key[2])) + str(int(str1[3]) ^ int(key[3]))
+        output = str(int(str1[0]) ^ int(key[0])) + str(int(str1[1]) ^ int(key[1])) + \
+                     str(int(str1[2]) ^ int(key[2])) + \
+                         str(int(str1[3]) ^ int(key[3]))
     else:
-        integer1 = str(int(str1[0]) ^ int(key[0])) + str(int(str1[1]) ^ int(key[1])) + str(int(str1[2]) ^ int(key[2])) + str(int(str1[3]) ^ int(key[3])) + \
+        output = str(int(str1[0]) ^ int(key[0])) + str(int(str1[1]) ^ int(key[1])) + str(int(str1[2]) ^ int(key[2])) + str(int(str1[3]) ^ int(key[3])) + \
                str(int(str1[4]) ^ int(key[4])) + str(int(str1[5]) ^ int(key[5])) + \
                    str(int(str1[6]) ^ int(key[6])) + \
                        str(int(str1[7]) ^ int(key[7]))
 
-    return str(integer1)
+    return output
 
 
 def SBox(str):
@@ -94,17 +83,11 @@ def SBox(str):
           ["11", "00", "01", "00"],  # 3 0 1 0
           ["10", "01", "00", "11"]]  # 2 1 0 3
 
-    #print(len(str))
-
     row0 = 2 * int(str[0]) + 1 * int(str[3])
     column0 = 2 * int(str[1]) + 1 * int(str[2])
 
     row1 = 2 * int(str[4]) + 1 * int(str[7])
     column1 = 2 * int(str[5]) + 1 * int(str[6])
-
-    #print(len(str))
-    #print(type(s0[row0][column0] + s1[row1][column1]))
-    #print(s0[row0][column0] + s1[row1][column1])
 
     return s0[row0][column0] + s1[row1][column1]
 
@@ -126,19 +109,13 @@ def Encryption(str, key):
 
     temp_output1 = xor(str_ip[0:4], P4(SBox(xor(EP(str_ip[4:8]), key1))))
 
-    #print(temp_output1)
-
     temp_output2 = xor(str_ip[4:8], P4(SBox(xor(EP(temp_output1), key2))))
-
-    #print(SBox(xor(EP(str_temp_right), key2)))
 
     #second round
     str = temp_output2 + temp_output1
 
     str = IP_RE(str)
 
-    print("Encryption : ")
-    print(str)
     return str
 
 
@@ -151,17 +128,11 @@ def Decryption(str, key):
 
     temp_output1 = xor(str_ip[0:4], P4(SBox(xor(EP(str_ip[4:8]), key2))))
 
-    #print(temp_output1)
-
     temp_output2 = xor(str_ip[4:8], P4(SBox(xor(EP(temp_output1), key1))))
-
-    #print(SBox(xor(EP(str_temp_right), key2)))
 
     #second round
     str = temp_output2 + temp_output1
 
     str = IP_RE(str)
 
-    print("Decryption : ")
-    print(str)
     return str
