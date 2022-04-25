@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
   <body>
     {% csrf_token %}
+    <div class="container">
+    <h2>S-DES</h2>
     <form action="/SDES/encrypt" method="get">
+        <div class="form-group">
         <label for="plain_text">plain text</label>
         <input id="plain_text" type="text" name="plain_text">
+        <label for="key">key</label>
+        <input id="key" type="text" name="key">
         <input type="submit" value="encrypt">
+        </div>
     </form>
     <p>
     {% if ciphertext %}
@@ -17,14 +26,20 @@
     {% endif %}
     </p>
     <form action="/SDES/decode" method="get">
+        <div class="form-group">
         <label for="cipher_text">cipher text</label>
         <input id="cipher_text" type="text" name="cipher_text">
+        <label for="key">key</label>
+        <input id="key" type="text" name="key">
         <input type="submit" value="decode">
+        </div>
     </form>
     <p>
     {% if plaintext %}
         plaintext: {{ plaintext }}
     {% endif %}
     </p>
+    </div>
+
   </body>
 </html>
